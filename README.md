@@ -1,3 +1,4 @@
 ## RESTful API CRUD Category Sederhana
 
-untuk API Specification nya bisa dilihat didalam `/apispec/apispec.yml`
+Untuk file API Specification nya bisa dilihat didalam `/apispec/apispec.yml`\
+Atau bisa dilihat langsung di [API DOCS](https://app.swaggerhub.com/apis-docs/ABDRHMNGH/simplerestfulapi/1.0.0)
