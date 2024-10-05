@@ -7,7 +7,10 @@ import (
 	"simple_restful_api_golang/model/entity"
 )
 
-func Save(ctx context.Context, tx *sql.Tx, category entity.Category) entity.Category {
+type CategoryRepositoryImpl struct {
+}
+
+func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, category entity.Category) entity.Category {
 	SQL := "INSERT INTO category(name) VALUES (?)"
 	result, err := tx.ExecContext(ctx, SQL, category.Name)
 	if err != nil {
@@ -20,7 +23,7 @@ func Save(ctx context.Context, tx *sql.Tx, category entity.Category) entity.Cate
 	return category
 }
 
-func Update(ctx context.Context, tx *sql.Tx, category entity.Category) entity.Category {
+func (repository *CategoryRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, category entity.Category) entity.Category {
 	SQL := "UPDATE category SET name = ? WHERE id = ?"
 	_, err := tx.ExecContext(ctx, SQL, category.Name, category.Id)
 	if err != nil {
@@ -30,7 +33,7 @@ func Update(ctx context.Context, tx *sql.Tx, category entity.Category) entity.Ca
 	return category
 }
 
-func Delete(ctx context.Context, tx *sql.Tx, category entity.Category) {
+func (repository *CategoryRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, category entity.Category) {
 	SQL := "DELETE FROM category WHERE id = ?"
 	_, err := tx.ExecContext(ctx, SQL, category.Id)
 	if err != nil {
@@ -38,7 +41,7 @@ func Delete(ctx context.Context, tx *sql.Tx, category entity.Category) {
 	}
 }
 
-func FindById(ctx context.Context, tx *sql.Tx, categoryId int) (entity.Category, error) {
+func (repository *CategoryRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, categoryId int) (entity.Category, error) {
 	SQL := "SELECT id, name FROM category WHERE id = ?"
 	result, err := tx.QueryContext(ctx, SQL, categoryId)
 	if err != nil {
@@ -59,7 +62,7 @@ func FindById(ctx context.Context, tx *sql.Tx, categoryId int) (entity.Category,
 	}
 }
 
-func FindAll(ctx context.Context, tx *sql.Tx) []entity.Category {
+func (repository *CategoryRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []entity.Category {
 	var categories []entity.Category
 	SQL := "SELECT id, name FROM category"
 	result, err := tx.QueryContext(ctx, SQL)
