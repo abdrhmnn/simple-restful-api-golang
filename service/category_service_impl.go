@@ -25,7 +25,7 @@ func NewCategoryService(categoryRepository repository.CategoryRepository, db *sq
 	}
 }
 
-func (service *CategoryServiceImpl) CreateCategory(ctx context.Context, request api.CategoryCreateRequest) (_ api.CategoryCreateResponse) {
+func (service *CategoryServiceImpl) CreateCategory(ctx context.Context, request api.CategoryCreateRequest) api.CategoryCreateResponse {
 	errValidasi := service.Validate.Struct(request)
 	if errValidasi != nil {
 		panic(errValidasi)
@@ -40,10 +40,14 @@ func (service *CategoryServiceImpl) CreateCategory(ctx context.Context, request 
 		err := recover()
 		if err != nil {
 			errRolbak := tx.Rollback()
-			panic(errRolbak)
+			if errRolbak != nil {
+				panic(errRolbak)
+			}
 		} else {
 			errCommit := tx.Commit()
-			panic(errCommit)
+			if errCommit != nil {
+				panic(errCommit)
+			}
 		}
 	}()
 
@@ -56,7 +60,7 @@ func (service *CategoryServiceImpl) CreateCategory(ctx context.Context, request 
 	return helper.ToCategoryResponse(category)
 }
 
-func (service *CategoryServiceImpl) UpdateCategory(ctx context.Context, request api.CategoryUpdateRequest) (_ api.CategoryCreateResponse) {
+func (service *CategoryServiceImpl) UpdateCategory(ctx context.Context, request api.CategoryUpdateRequest) api.CategoryCreateResponse {
 	tx, err := service.DB.Begin()
 	if err != nil {
 		panic(err)
@@ -66,10 +70,14 @@ func (service *CategoryServiceImpl) UpdateCategory(ctx context.Context, request 
 		err := recover()
 		if err != nil {
 			errRolbak := tx.Rollback()
-			panic(errRolbak)
+			if errRolbak != nil {
+				panic(errRolbak)
+			}
 		} else {
 			errCommit := tx.Commit()
-			panic(errCommit)
+			if errCommit != nil {
+				panic(errCommit)
+			}
 		}
 	}()
 
@@ -95,10 +103,14 @@ func (service *CategoryServiceImpl) DeleteCategory(ctx context.Context, category
 		err := recover()
 		if err != nil {
 			errRolbak := tx.Rollback()
-			panic(errRolbak)
+			if errRolbak != nil {
+				panic(errRolbak)
+			}
 		} else {
 			errCommit := tx.Commit()
-			panic(errCommit)
+			if errCommit != nil {
+				panic(errCommit)
+			}
 		}
 	}()
 
@@ -110,7 +122,7 @@ func (service *CategoryServiceImpl) DeleteCategory(ctx context.Context, category
 	service.CategoryRepository.Delete(ctx, tx, category)
 }
 
-func (service *CategoryServiceImpl) FindByIdCategory(ctx context.Context, categoryId int) (_ api.CategoryCreateResponse) {
+func (service *CategoryServiceImpl) FindByIdCategory(ctx context.Context, categoryId int) api.CategoryCreateResponse {
 	tx, err := service.DB.Begin()
 	if err != nil {
 		panic(err)
@@ -120,10 +132,14 @@ func (service *CategoryServiceImpl) FindByIdCategory(ctx context.Context, catego
 		err := recover()
 		if err != nil {
 			errRolbak := tx.Rollback()
-			panic(errRolbak)
+			if errRolbak != nil {
+				panic(errRolbak)
+			}
 		} else {
 			errCommit := tx.Commit()
-			panic(errCommit)
+			if errCommit != nil {
+				panic(errCommit)
+			}
 		}
 	}()
 
@@ -135,7 +151,7 @@ func (service *CategoryServiceImpl) FindByIdCategory(ctx context.Context, catego
 	return helper.ToCategoryResponse(category)
 }
 
-func (service *CategoryServiceImpl) FindAllCategory(ctx context.Context) (_ []api.CategoryCreateResponse) {
+func (service *CategoryServiceImpl) FindAllCategory(ctx context.Context) []api.CategoryCreateResponse {
 	tx, err := service.DB.Begin()
 	if err != nil {
 		panic(err)
@@ -145,10 +161,14 @@ func (service *CategoryServiceImpl) FindAllCategory(ctx context.Context) (_ []ap
 		err := recover()
 		if err != nil {
 			errRolbak := tx.Rollback()
-			panic(errRolbak)
+			if errRolbak != nil {
+				panic(errRolbak)
+			}
 		} else {
 			errCommit := tx.Commit()
-			panic(errCommit)
+			if errCommit != nil {
+				panic(errCommit)
+			}
 		}
 	}()
 

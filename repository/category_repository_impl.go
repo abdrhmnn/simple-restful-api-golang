@@ -29,10 +29,11 @@ func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, 
 
 func (repository *CategoryRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, category entity.Category) entity.Category {
 	SQL := "UPDATE category SET name = ? WHERE id = ?"
-	_, err := tx.ExecContext(ctx, SQL, category.Name, category.Id)
+	result, err := tx.QueryContext(ctx, SQL, category.Name, category.Id)
 	if err != nil {
 		panic(err)
 	}
+	defer result.Close()
 
 	return category
 }
@@ -51,6 +52,7 @@ func (repository *CategoryRepositoryImpl) FindById(ctx context.Context, tx *sql.
 	if err != nil {
 		panic(err)
 	}
+	defer result.Close()
 
 	category := entity.Category{}
 
@@ -67,14 +69,15 @@ func (repository *CategoryRepositoryImpl) FindById(ctx context.Context, tx *sql.
 }
 
 func (repository *CategoryRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []entity.Category {
-	var categories []entity.Category
 	SQL := "SELECT id, name FROM category"
 	result, err := tx.QueryContext(ctx, SQL)
 	if err != nil {
 		panic(err)
 	}
+	defer result.Close()
 
-	if result.Next() {
+	var categories []entity.Category
+	for result.Next() {
 		category := entity.Category{}
 		err := result.Scan(&category.Id, &category.Name)
 		if err != nil {
