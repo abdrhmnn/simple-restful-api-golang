@@ -1,7 +1,7 @@
 ## RESTful API CRUD Category Sederhana
 
 Untuk file API Specification nya bisa dilihat didalam `/apispec/apispec.yml`\
-Atau bisa dilihat langsung di [API Specification](https://app.swaggerhub.com/apis-docs/ABDRHMNGH/simplerestfulapi/1.0.0).
+Atau bisa dilihat langsung di [API Specification](https://app.swaggerhub.com/apis-docs/ABDRHMNGH/simplerestfulapi/1.0.1).
 
 ## Berikut file database yang digunakan
 | No. | Table Name | Link |
