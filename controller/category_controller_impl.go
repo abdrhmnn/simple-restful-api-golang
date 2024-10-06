@@ -91,7 +91,10 @@ func (controller *CategoryControllerImpl) Delete(writer http.ResponseWriter, req
 
 func (controller *CategoryControllerImpl) FindById(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	categoryId := params.ByName("categoryId")
-	id, _ := strconv.Atoi(categoryId)
+	id, err := strconv.Atoi(categoryId)
+	if err != nil {
+		panic(err)
+	}
 
 	categoryResponse := controller.CategoryService.FindByIdCategory(request.Context(), id)
 	standartResponse := api.StandartResponse{
@@ -102,9 +105,9 @@ func (controller *CategoryControllerImpl) FindById(writer http.ResponseWriter, r
 
 	writer.Header().Add("Content-Type", "application/json")
 	encoder := json.NewEncoder(writer)
-	err := encoder.Encode(standartResponse)
-	if err != nil {
-		panic(err)
+	errEncode := encoder.Encode(standartResponse)
+	if errEncode != nil {
+		panic(errEncode)
 	}
 }
 

@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"database/sql"
+	"simple_restful_api_golang/exepciton"
 	"simple_restful_api_golang/helper"
 	"simple_restful_api_golang/model/api"
 	"simple_restful_api_golang/model/entity"
@@ -83,7 +84,7 @@ func (service *CategoryServiceImpl) UpdateCategory(ctx context.Context, request 
 
 	category, errGetId := service.CategoryRepository.FindById(ctx, tx, request.Id)
 	if errGetId != nil {
-		panic(errGetId)
+		panic(exepciton.NewNotFoundError(errGetId.Error()))
 	}
 
 	category.Name = request.Name
@@ -116,7 +117,7 @@ func (service *CategoryServiceImpl) DeleteCategory(ctx context.Context, category
 
 	category, err := service.CategoryRepository.FindById(ctx, tx, categoryId)
 	if err != nil {
-		panic(err)
+		panic(exepciton.NewNotFoundError(err.Error()))
 	}
 
 	service.CategoryRepository.Delete(ctx, tx, category)
@@ -135,6 +136,7 @@ func (service *CategoryServiceImpl) FindByIdCategory(ctx context.Context, catego
 			if errRolbak != nil {
 				panic(errRolbak)
 			}
+			panic(err)
 		} else {
 			errCommit := tx.Commit()
 			if errCommit != nil {
@@ -145,7 +147,7 @@ func (service *CategoryServiceImpl) FindByIdCategory(ctx context.Context, catego
 
 	category, err := service.CategoryRepository.FindById(ctx, tx, categoryId)
 	if err != nil {
-		panic(err)
+		panic(exepciton.NewNotFoundError(err.Error()))
 	}
 
 	return helper.ToCategoryResponse(category)
