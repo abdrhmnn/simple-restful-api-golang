@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"simple_restful_api_golang/controller"
 	"simple_restful_api_golang/database"
 	"simple_restful_api_golang/exepciton"
+	"simple_restful_api_golang/middleware"
 	"simple_restful_api_golang/repository"
 	"simple_restful_api_golang/service"
 
@@ -33,8 +35,10 @@ func main() {
 
 	server := http.Server{
 		Addr:    "localhost:3000",
-		Handler: router,
+		Handler: middleware.NewAuthMiddleware(router),
 	}
+
+	fmt.Println("server is running on host: http://localhost:3000")
 
 	err := server.ListenAndServe()
 	if err != nil {
