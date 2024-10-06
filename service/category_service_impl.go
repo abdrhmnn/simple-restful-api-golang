@@ -62,6 +62,11 @@ func (service *CategoryServiceImpl) CreateCategory(ctx context.Context, request 
 }
 
 func (service *CategoryServiceImpl) UpdateCategory(ctx context.Context, request api.CategoryUpdateRequest) api.CategoryCreateResponse {
+	errValidasi := service.Validate.Struct(request)
+	if errValidasi != nil {
+		panic(errValidasi)
+	}
+
 	tx, err := service.DB.Begin()
 	if err != nil {
 		panic(err)
@@ -74,6 +79,7 @@ func (service *CategoryServiceImpl) UpdateCategory(ctx context.Context, request 
 			if errRolbak != nil {
 				panic(errRolbak)
 			}
+			panic(err)
 		} else {
 			errCommit := tx.Commit()
 			if errCommit != nil {
@@ -107,6 +113,7 @@ func (service *CategoryServiceImpl) DeleteCategory(ctx context.Context, category
 			if errRolbak != nil {
 				panic(errRolbak)
 			}
+			panic(err)
 		} else {
 			errCommit := tx.Commit()
 			if errCommit != nil {

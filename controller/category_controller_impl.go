@@ -73,7 +73,10 @@ func (controller *CategoryControllerImpl) Update(writer http.ResponseWriter, req
 
 func (controller *CategoryControllerImpl) Delete(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	categoryId := params.ByName("categoryId")
-	id, _ := strconv.Atoi(categoryId)
+	id, err := strconv.Atoi(categoryId)
+	if err != nil {
+		panic(err)
+	}
 
 	controller.CategoryService.DeleteCategory(request.Context(), id)
 	standartResponse := api.StandartResponse{
@@ -83,7 +86,7 @@ func (controller *CategoryControllerImpl) Delete(writer http.ResponseWriter, req
 
 	writer.Header().Add("Content-Type", "application/json")
 	encoder := json.NewEncoder(writer)
-	err := encoder.Encode(standartResponse)
+	err = encoder.Encode(standartResponse)
 	if err != nil {
 		panic(err)
 	}
